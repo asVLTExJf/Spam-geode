@@ -7,17 +7,17 @@
 	"name": "Spam Assist",
 	"version": "v1.0.0",
 	"developer": "yourname",
-	"description": "Выравнивает ритм спама и помогает держать его ровным.",
+	"description": "Evens out spam timing and helps keep the rhythm steady.",
 	"settings": {
 		"enabled": {
 			"type": "bool",
-			"name": "Включить",
+			"name": "Enabled",
 			"default": true
 		},
 		"boost": {
 			"type": "int",
-			"name": "Ускорение (%)",
-			"description": "Насколько сжимать интервал между кликами.",
+			"name": "Boost (%)",
+			"description": "How much to shrink the interval between clicks.",
 			"default": 6,
 			"min": 0,
 			"max": 30,
@@ -25,8 +25,8 @@
 		},
 		"max-delay": {
 			"type": "int",
-			"name": "Макс. задержка выравнивания (мс)",
-			"description": "Насколько мод может сдвинуть твой клик, чтобы попасть в ритм.",
+			"name": "Max align delay (ms)",
+			"description": "How far the mod may shift your click to hit the rhythm.",
 			"default": 25,
 			"min": 0,
 			"max": 60,
@@ -34,8 +34,8 @@
 		},
 		"hold": {
 			"type": "int",
-			"name": "Удержание (% от интервала)",
-			"description": "Длина удержания в каждом клике спама.",
+			"name": "Hold (% of interval)",
+			"description": "Hold length in each spam click.",
 			"default": 45,
 			"min": 20,
 			"max": 80,
@@ -43,7 +43,7 @@
 		},
 		"max-cps": {
 			"type": "int",
-			"name": "Макс. КПС",
+			"name": "Max CPS",
 			"default": 14,
 			"min": 6,
 			"max": 20,
@@ -51,8 +51,8 @@
 		},
 		"autofill": {
 			"type": "bool",
-			"name": "Автоспам при удержании",
-			"description": "Задал ритм двумя-тремя тапами, потом просто держишь палец, и мод продолжает кликать в этом ритме.",
+			"name": "Hold to auto-spam",
+			"description": "Tap the rhythm 2-3 times, then just hold your finger and the mod keeps clicking at that rhythm.",
 			"default": false
 		}
 	}
