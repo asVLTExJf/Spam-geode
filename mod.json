@@ -1,0 +1,59 @@
+{
+	"geode": "4.0.0",
+	"gd": {
+		"android": "2.2081"
+	},
+	"id": "yourname.spam-assist",
+	"name": "Spam Assist",
+	"version": "v1.0.0",
+	"developer": "yourname",
+	"description": "Выравнивает ритм спама и помогает держать его ровным.",
+	"settings": {
+		"enabled": {
+			"type": "bool",
+			"name": "Включить",
+			"default": true
+		},
+		"boost": {
+			"type": "int",
+			"name": "Ускорение (%)",
+			"description": "Насколько сжимать интервал между кликами.",
+			"default": 6,
+			"min": 0,
+			"max": 30,
+			"control": { "slider": true }
+		},
+		"max-delay": {
+			"type": "int",
+			"name": "Макс. задержка выравнивания (мс)",
+			"description": "Насколько мод может сдвинуть твой клик, чтобы попасть в ритм.",
+			"default": 25,
+			"min": 0,
+			"max": 60,
+			"control": { "slider": true }
+		},
+		"hold": {
+			"type": "int",
+			"name": "Удержание (% от интервала)",
+			"description": "Длина удержания в каждом клике спама.",
+			"default": 45,
+			"min": 20,
+			"max": 80,
+			"control": { "slider": true }
+		},
+		"max-cps": {
+			"type": "int",
+			"name": "Макс. КПС",
+			"default": 14,
+			"min": 6,
+			"max": 20,
+			"control": { "slider": true }
+		},
+		"autofill": {
+			"type": "bool",
+			"name": "Автоспам при удержании",
+			"description": "Задал ритм двумя-тремя тапами, потом просто держишь палец, и мод продолжает кликать в этом ритме.",
+			"default": false
+		}
+	}
+}
