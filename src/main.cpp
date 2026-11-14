@@ -1,8 +1,14 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJBaseGameLayer.hpp>
 #include <algorithm>
+#include <chrono>
 
 using namespace geode::prelude;
+
+static double nowSec() {
+    using namespace std::chrono;
+    return duration<double>(steady_clock::now().time_since_epoch()).count();
+}
 
 struct Slot {
     bool physDown = false;      // палец реально на экране
@@ -36,17 +42,21 @@ static Cfg readCfg() {
 
 class $modify(SpamLayer, GJBaseGameLayer) {
     struct Fields {
-        double time = 0;
         bool injecting = false;
         Slot slots[2];
     };
+
+    bool inPlay() {
+        auto pl = PlayLayer::get();
+        return pl && static_cast<GJBaseGameLayer*>(pl) == static_cast<GJBaseGameLayer*>(this);
+    }
 
     // отправить нажатие/отпускание в игру в обход нашей логики
     void emit(int idx, bool down) {
         auto& s = m_fields->slots[idx];
         if (down == s.virtDown) return;
         s.virtDown = down;
-        if (down) s.lastEmit = m_fields->time;
+        if (down) s.lastEmit = nowSec();
         m_fields->injecting = true;
         GJBaseGameLayer::handleButton(down, 1, idx == 0);
         m_fields->injecting = false;
@@ -54,14 +64,14 @@ class $modify(SpamLayer, GJBaseGameLayer) {
 
     void handleButton(bool down, int button, bool isPlayer1) {
         Cfg c = readCfg();
-        if (button != 1 || m_fields->injecting || !c.enabled || this != PlayLayer::get()) {
+        if (button != 1 || m_fields->injecting || !c.enabled || !inPlay()) {
             GJBaseGameLayer::handleButton(down, button, isPlayer1);
             return;
         }
 
         int idx = isPlayer1 ? 0 : 1;
         auto& s = m_fields->slots[idx];
-        double now = m_fields->time;
+        double now = nowSec();
 
         if (down) {
             s.physDown = true;
@@ -111,7 +121,7 @@ class $modify(SpamLayer, GJBaseGameLayer) {
 
     void tick() {
         Cfg c = readCfg();
-        double t = m_fields->time;
+        double t = nowSec();
         for (int i = 0; i < 2; i++) {
             auto& s = m_fields->slots[i];
             if (s.pendingPress && t >= s.pressAt) { s.pendingPress = false; emit(i, true); }
@@ -126,11 +136,10 @@ class $modify(SpamLayer, GJBaseGameLayer) {
         }
     }
 
-    void processCommands(float dt) {
-        m_fields->time += dt;
-        if (this == PlayLayer::get() && Mod::get()->getSettingValue<bool>("enabled")) {
+    void processCommands(float dt, bool isHalfTick, bool isLastTick) {
+        if (!isHalfTick && inPlay() && Mod::get()->getSettingValue<bool>("enabled")) {
             tick();
         }
-        GJBaseGameLayer::processCommands(dt);
+        GJBaseGameLayer::processCommands(dt, isHalfTick, isLastTick);
     }
 };
