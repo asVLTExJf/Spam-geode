@@ -3,7 +3,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DFMT_CONSTEVAL=")
 
 project(SpamAssist VERSION 1.0.0)
 
@@ -14,4 +13,7 @@ if (NOT DEFINED ENV{GEODE_SDK})
 endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
+if (TARGET fmt)
+    set_target_properties(fmt PROPERTIES CXX_STANDARD 17)
+endif()
 setup_geode_mod(${PROJECT_NAME})
